@@ -2,6 +2,8 @@ package hans.startup.petfinderbackend.models.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "animal_report")
 public class AnimalReport {
@@ -10,7 +12,7 @@ public class AnimalReport {
     private Integer animalReportId;
     private String reporterName;
     private String reporterEmail;
-    private String reportDate;
+    private LocalDateTime reportDate;
     private String note;
 
     @ManyToOne

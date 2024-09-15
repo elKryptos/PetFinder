@@ -18,8 +18,9 @@ public class Animal {
     private String breed;
     private String color;
     private String description;
-
     private LocalDateTime lostDate;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     public enum Status{
@@ -31,7 +32,7 @@ public class Animal {
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
 
-    @OneToMany(mappedBy = "animal")
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AnimalReport> animalReport;
 
 }

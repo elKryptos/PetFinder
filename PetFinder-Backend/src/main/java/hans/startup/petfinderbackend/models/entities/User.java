@@ -22,6 +22,6 @@ public class User {
     private LocalDateTime registrationDate;
     private LocalDateTime lastLogin;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Animal> animals;
 }
