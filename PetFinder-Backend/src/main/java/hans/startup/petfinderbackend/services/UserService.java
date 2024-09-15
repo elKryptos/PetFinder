@@ -1,5 +1,6 @@
 package hans.startup.petfinderbackend.services;
 
+import hans.startup.petfinderbackend.models.dtos.UserFormDTO;
 import hans.startup.petfinderbackend.models.entities.User;
 import hans.startup.petfinderbackend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -20,4 +21,5 @@ public class UserService {
     public User getUserById(int id) {
         return userRepository.findById(id).get();
     }
+    
 }
