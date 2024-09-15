@@ -1,11 +1,14 @@
 package hans.startup.petfinderbackend.models.entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "Animal")
+@Table(name = "animal")
+@Data
 public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +27,11 @@ public class Animal {
         FOUND
     }
 
-    public Animal() {}
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    private User user;
+
+    @OneToMany(mappedBy = "animal")
+    private List<AnimalReport> animalReport;
 
 }
