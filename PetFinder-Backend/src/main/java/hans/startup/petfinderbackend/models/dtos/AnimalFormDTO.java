@@ -14,7 +14,7 @@ public class AnimalFormDTO {
     @NotBlank
     private String animalType;
     @NotBlank
-    private String breed;
+    private String animalBreed;
     @NotBlank
     private String color;
     @NotBlank

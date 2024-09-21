@@ -14,11 +14,10 @@ public class AnimalReport {
     private Integer animalReportId;
     private String reporterName;
     private String reporterEmail;
-    private LocalDateTime reportDate;
+    private LocalDateTime reportedDate;
     private String note;
 
     @ManyToOne
     @JoinColumn(name = "animal_id", referencedColumnName = "animalId")
     private Animal animal;
-
 }

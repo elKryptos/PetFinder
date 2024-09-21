@@ -1,5 +1,6 @@
 package hans.startup.petfinderbackend.models.entities;
 
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,17 +16,16 @@ public class Animal {
     private Integer animalId;
     private String animalName;
     private String animalType;
-    private String breed;
-    private String color;
+    private String animalBreed;
+    private String animalColor;
     private String description;
     private LocalDateTime lostDate;
-
     @Enumerated(EnumType.STRING)
     private Status status;
 
     public enum Status{
-        LOST,
-        FOUND
+        Lost,
+        Found
     }
 
     @ManyToOne
