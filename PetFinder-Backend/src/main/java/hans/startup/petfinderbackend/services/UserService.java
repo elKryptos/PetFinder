@@ -26,7 +26,7 @@ public class UserService {
             return ResponseEntity.status(404).body(new BackendResponse("User with id " + id + " not found"));
         } else {
             User user = userRepository.findById(id).get();
-            return ResponseEntity.status(200).body(new BackendResponse("User" + id + "found", user));
+            return ResponseEntity.status(200).body(new BackendResponse("User " + id + " found", user));
         }
     }
 
@@ -49,10 +49,11 @@ public class UserService {
         } else {
             user.setEmail(userFormDto.getEmail());
         }
-        if(userFormDto.getPassword() != null) {
-            user.setPassword(userFormDto.getPassword());
+        if(userFormDto.getPassword() == null | userFormDto.getPassword().isEmpty()) {
+            return ResponseEntity.status(400).body(new BackendResponse("Password cannont be empty"));
         } else {
-            return ResponseEntity.status(400).body(new BackendResponse("Empty or Invalid password"));
+            user.setPassword(userFormDto.getPassword());
+            //aggiungere hashing della password
         }
         user.setRegistrationDate(LocalDateTime.now());
         try {
