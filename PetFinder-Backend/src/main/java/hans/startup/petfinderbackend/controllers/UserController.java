@@ -43,4 +43,9 @@ public class UserController {
         return userService.privateArea(session, auth);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<BackendResponse> logout(HttpSession session) {
+        return userService.logout(session);
+    }
+
 }

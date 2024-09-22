@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.UUID;
 
+import static hans.startup.petfinderbackend.services.UserService.revokedTokens;
+
 public class JwtToken {
 
     public static PrivateKey getPrivateKey() {
@@ -73,6 +75,9 @@ public class JwtToken {
     }
 
     public static Jws<Claims> verifyToken(String token) {
+        if (token == null || token.isEmpty() || revokedTokens.contains(token)) {
+            return null;
+        }
         try {
             return Jwts.parser()
                     .setSigningKey(getPublicKey())

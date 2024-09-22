@@ -14,7 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @Service
@@ -38,42 +40,40 @@ public class UserService {
 
     public ResponseEntity<BackendResponse> createUser(UserFormDto userFormDto) {
         User user = new User();
-
-            if (userFormDto.getFirstname() == null || userFormDto.getFirstname().isEmpty()) {
-                return ResponseEntity.status(400).body(new BackendResponse("Firstname cannot be empty"));
-            } else {
-                user.setFirstname(userFormDto.getFirstname());
-            }
-            if (userFormDto.getLastname() == null || userFormDto.getLastname().isEmpty()) {
-                return ResponseEntity.status(400).body(new BackendResponse("Lastname cannot be empty"));
-            } else {
-                user.setLastname(userFormDto.getLastname());
-            }
-            if (userFormDto.getEmail() == null || userFormDto.getEmail().isEmpty()) {
-                return ResponseEntity.status(400).body(new BackendResponse("Empty or Invalid email address"));
-            } else if (userRepository.existsByEmail(userFormDto.getEmail())) {
-                return ResponseEntity.status(400).body(new BackendResponse("Email address already in use"));
-            } else {
-                user.setEmail(userFormDto.getEmail());
-            }
-            if (userFormDto.getPassword() == null || userFormDto.getPassword().isEmpty()) {
-                return ResponseEntity.status(400).body(new BackendResponse("Password cannot be empty"));
-            } else {
-                try {
-                    user.setPassword(encoder.encode(userFormDto.getPassword()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return ResponseEntity.status(400).body(new BackendResponse("Invalid password | Password cannot be empty | Password not hashed"));
-                }
-            }
-            user.setRegistrationDate(LocalDateTime.now());
+        if (userFormDto.getFirstname() == null || userFormDto.getFirstname().isEmpty()) {
+            return ResponseEntity.status(400).body(new BackendResponse("Firstname cannot be empty"));
+        } else {
+            user.setFirstname(userFormDto.getFirstname());
+        }
+        if (userFormDto.getLastname() == null || userFormDto.getLastname().isEmpty()) {
+            return ResponseEntity.status(400).body(new BackendResponse("Lastname cannot be empty"));
+        } else {
+            user.setLastname(userFormDto.getLastname());
+        }
+        if (userFormDto.getEmail() == null || userFormDto.getEmail().isEmpty()) {
+            return ResponseEntity.status(400).body(new BackendResponse("Empty or Invalid email address"));
+        } else if (userRepository.existsByEmail(userFormDto.getEmail())) {
+            return ResponseEntity.status(400).body(new BackendResponse("Email address already in use"));
+        } else {
+            user.setEmail(userFormDto.getEmail());
+        }
+        if (userFormDto.getPassword() == null || userFormDto.getPassword().isEmpty()) {
+            return ResponseEntity.status(400).body(new BackendResponse("Password cannot be empty"));
+        } else {
             try {
-                userRepository.save(user);
+                user.setPassword(encoder.encode(userFormDto.getPassword()));
             } catch (Exception e) {
                 e.printStackTrace();
-                return ResponseEntity.status(500).body(new BackendResponse("Error creating user"));
+                return ResponseEntity.status(400).body(new BackendResponse("Invalid password | Password cannot be empty | Password not hashed"));
             }
-        return ResponseEntity.status(201).body(new BackendResponse("User created", user));
+        }
+        user.setRegistrationDate(LocalDateTime.now());
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(new BackendResponse("Error creating user"));
+        }return ResponseEntity.status(201).body(new BackendResponse("User created", user));
     }
 
     public ResponseEntity<BackendResponse> loginUser(UserFormDto userFormDto, HttpSession session) {
@@ -102,6 +102,17 @@ public class UserService {
         if (user == null) {
             return ResponseEntity.status(401).body(new BackendResponse("Email address not found"));
         }
-        return ResponseEntity.status(200).body(new BackendResponse("Logged in", claims.getBody()));
+        return ResponseEntity.status(200).body(new BackendResponse("Logged in private area", claims.getBody()));
+    }
+
+    public static Set<String> revokedTokens = new HashSet<>();
+    public ResponseEntity<BackendResponse> logout(HttpSession session) {
+        String token = (String) session.getAttribute("userToken");
+        if (token != null) {
+            revokedTokens.add(token);
+        }
+        session.removeAttribute("userToken");
+        session.removeAttribute("email");
+        return ResponseEntity.status(200).body(new BackendResponse("Logged out"));
     }
 }
