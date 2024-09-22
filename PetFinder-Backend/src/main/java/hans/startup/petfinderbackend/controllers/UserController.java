@@ -5,6 +5,7 @@ import hans.startup.petfinderbackend.models.entities.User;
 import hans.startup.petfinderbackend.repositories.UserRepository;
 import hans.startup.petfinderbackend.responses.BackendResponse;
 import hans.startup.petfinderbackend.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,11 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity<BackendResponse> createUser(@RequestBody UserFormDto userFormDto) {
         return userService.createUser(userFormDto);
+    }
+
+    @PostMapping("login")
+    public ResponseEntity<BackendResponse> login(@RequestBody UserFormDto userFormDto, HttpSession session) {
+        return userService.loginUser(userFormDto, session);
     }
 
 }

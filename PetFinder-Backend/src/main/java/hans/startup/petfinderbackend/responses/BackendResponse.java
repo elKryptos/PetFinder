@@ -7,6 +7,8 @@ import lombok.Data;
 public class BackendResponse {
     private String msg;
     private User user;
+    private String email;
+    private String token;
 
     public BackendResponse(String msg) {
         super();
@@ -14,8 +16,13 @@ public class BackendResponse {
     }
 
     public BackendResponse(String msg, User user) {
-        super();
         this.msg = msg;
         this.user = user;
     }
+
+    public BackendResponse(String token, String email) {
+        this.token = token;
+        this.email = email;
+    }
+
 }

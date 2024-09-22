@@ -7,8 +7,10 @@ import hans.startup.petfinderbackend.responses.BackendResponse;
 import hans.startup.petfinderbackend.utils.JwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,6 +21,7 @@ import java.util.List;
 public class UserService {
 
     UserRepository userRepository;
+    BCryptPasswordEncoder encoder;
 
     public List<User> allUsers() {
         return userRepository.findAll();
@@ -53,11 +56,15 @@ public class UserService {
             } else {
                 user.setEmail(userFormDto.getEmail());
             }
-            if (userFormDto.getPassword() == null | userFormDto.getPassword().isEmpty()) {
-                return ResponseEntity.status(400).body(new BackendResponse("Password cannont be empty"));
+            if (userFormDto.getPassword() == null || userFormDto.getPassword().isEmpty()) {
+                return ResponseEntity.status(400).body(new BackendResponse("Password cannot be empty"));
             } else {
-                user.setPassword();
-                //aggiungere hashing della password
+                try {
+                    user.setPassword(encoder.encode(userFormDto.getPassword()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return ResponseEntity.status(400).body(new BackendResponse("Invalid password | Password cannot be empty | Password not hashed"));
+                }
             }
             user.setRegistrationDate(LocalDateTime.now());
             try {
@@ -69,11 +76,29 @@ public class UserService {
         return ResponseEntity.status(201).body(new BackendResponse("User created", user));
     }
 
-    public ResponseEntity<BackendResponse>  loginUser(UserFormDto userFormDto) {
-        if (!userRepository.existsByEmail(userFormDto.getEmail())){
-            return ResponseEntity.status(400).body(new BackendResponse("Email address not found"));
+    public ResponseEntity<BackendResponse> loginUser(UserFormDto userFormDto, HttpSession session) {
+        User user = userRepository.findByEmail(userFormDto.getEmail());
+        if ( user == null || userFormDto.getEmail().isEmpty()){
+            return ResponseEntity.status(401).body(new BackendResponse("Email address not found"));
         }
-        return  null;
+        if (!encoder.matches(userFormDto.getPassword(), user.getPassword())){
+            return ResponseEntity.status(401).body(new BackendResponse("Invalid password"));
+        }
+        String userToken = JwtToken.tokenGenerator(user.getFirstname(), user.getLastname(), user.getEmail());
+        session.setAttribute("userToken", userToken);
+        return ResponseEntity.status(200).body(new BackendResponse(userToken, user.getEmail()));
     }
 
+    public ResponseEntity<BackendResponse> personal(HttpSession session) {
+        String token = (String) session.getAttribute("userToken");
+        if (token == null) {
+            return ResponseEntity.status(401).body(new BackendResponse("No authentication token found"));
+        }
+
+        Jws<Claims> claims = JwtToken.verifyToken(token);
+        if (claims == null) {
+            return ResponseEntity.status(401).body(new BackendResponse("Expired or Invalid token"));
+        }
+        return ResponseEntity.status(200).body(new BackendResponse("Access granted"));
+    }
 }
