@@ -86,19 +86,22 @@ public class UserService {
         }
         String userToken = JwtToken.tokenGenerator(user.getFirstname(), user.getLastname(), user.getEmail());
         session.setAttribute("userToken", userToken);
+        session.setAttribute("email", user.getEmail());
         return ResponseEntity.status(200).body(new BackendResponse(userToken, user.getEmail()));
     }
 
-    public ResponseEntity<BackendResponse> personal(HttpSession session) {
-        String token = (String) session.getAttribute("userToken");
-        if (token == null) {
-            return ResponseEntity.status(401).body(new BackendResponse("No authentication token found"));
-        }
-
+    public ResponseEntity<BackendResponse> privateArea(HttpSession session, String auth) {
+        String token = auth.substring(7);
         Jws<Claims> claims = JwtToken.verifyToken(token);
+        System.out.println(claims);
         if (claims == null) {
-            return ResponseEntity.status(401).body(new BackendResponse("Expired or Invalid token"));
+            return ResponseEntity.status(401).body(new BackendResponse("Invalid token"));
         }
-        return ResponseEntity.status(200).body(new BackendResponse("Access granted"));
+        String email = claims.getBody().get("email", String.class);
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(401).body(new BackendResponse("Email address not found"));
+        }
+        return ResponseEntity.status(200).body(new BackendResponse("Logged in", claims.getBody()));
     }
 }

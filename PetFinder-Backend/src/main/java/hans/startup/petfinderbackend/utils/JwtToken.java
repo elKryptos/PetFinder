@@ -62,7 +62,7 @@ public class JwtToken {
                     .claim("email", email)
                     .setId(UUID.randomUUID().toString())
                     .setIssuedAt(Date.from(Instant.now()))
-                    .setExpiration(Date.from(Instant.now().plus(3, ChronoUnit.HOURS)))
+                    .setExpiration(Date.from(Instant.now().plus(3, ChronoUnit.MINUTES)))
                     .signWith(getPrivateKey(), SignatureAlgorithm.RS256)
                     .compact();
         } catch (Exception e) {

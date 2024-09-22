@@ -33,9 +33,14 @@ public class UserController {
         return userService.createUser(userFormDto);
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<BackendResponse> login(@RequestBody UserFormDto userFormDto, HttpSession session) {
         return userService.loginUser(userFormDto, session);
+    }
+
+    @PostMapping("/private")
+    public ResponseEntity<BackendResponse> privateArea(HttpSession session, @RequestHeader ("Authorization") String auth) {
+        return userService.privateArea(session, auth);
     }
 
 }
