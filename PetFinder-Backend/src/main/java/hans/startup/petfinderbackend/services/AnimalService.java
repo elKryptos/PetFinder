@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 import static hans.startup.petfinderbackend.services.UserService.revokedTokens;
 
 @AllArgsConstructor
@@ -39,9 +37,11 @@ public class AnimalService {
         animal.setDescription(animalDto.getDescription());
         animal.setLostDate(animalDto.getLostDate());
         animal.setStatus(Animal.Status.Lost);
-
+        // In work method for upload a file, is this case it will be an image.
+        // Add after finishing FileSystemStorageService
         animalRepository.save(animal);
 
         return null;
     }
+
 }

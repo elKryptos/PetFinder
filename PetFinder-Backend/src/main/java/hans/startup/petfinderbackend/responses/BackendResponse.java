@@ -32,7 +32,7 @@ public class BackendResponse {
 
     // Costruttore per messaggi e dati extra (claims)
     public BackendResponse(String msg, Map<String, Object> data) {
-        this.msg = msg;  // Qui correggo "message" con "msg"
+        this.msg = msg;
         this.data = data;
     }
 }
