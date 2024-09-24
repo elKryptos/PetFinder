@@ -37,7 +37,10 @@ public class AnimalService {
         animal.setAnimalBreed(animalDto.getAnimalBreed());
         animal.setAnimalColor(animalDto.getAnimalColor());
         animal.setDescription(animalDto.getDescription());
-        animal.setLostDate(LocalDateTime.now());
+        animal.setLostDate(animalDto.getLostDate());
+        animal.setStatus(Animal.Status.Lost);
+
+        animalRepository.save(animal);
 
         return null;
     }
