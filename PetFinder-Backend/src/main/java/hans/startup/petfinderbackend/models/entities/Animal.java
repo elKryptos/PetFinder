@@ -19,7 +19,9 @@ public class Animal {
     private String animalBreed;
     private String animalColor;
     private String description;
+    private String imagePath;
     private LocalDateTime lostDate;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 

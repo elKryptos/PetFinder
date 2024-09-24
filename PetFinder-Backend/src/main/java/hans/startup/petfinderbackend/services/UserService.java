@@ -1,6 +1,6 @@
 package hans.startup.petfinderbackend.services;
 
-import hans.startup.petfinderbackend.models.dtos.UserFormDto;
+import hans.startup.petfinderbackend.models.dtos.UserDto;
 import hans.startup.petfinderbackend.models.entities.User;
 import hans.startup.petfinderbackend.repositories.UserRepository;
 import hans.startup.petfinderbackend.responses.BackendResponse;
@@ -38,30 +38,30 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<BackendResponse> createUser(UserFormDto userFormDto) {
+    public ResponseEntity<BackendResponse> createUser(UserDto userDto) {
         User user = new User();
-        if (userFormDto.getFirstname() == null || userFormDto.getFirstname().isEmpty()) {
+        if (userDto.getFirstname() == null || userDto.getFirstname().isEmpty()) {
             return ResponseEntity.status(400).body(new BackendResponse("Firstname cannot be empty"));
         } else {
-            user.setFirstname(userFormDto.getFirstname());
+            user.setFirstname(userDto.getFirstname());
         }
-        if (userFormDto.getLastname() == null || userFormDto.getLastname().isEmpty()) {
+        if (userDto.getLastname() == null || userDto.getLastname().isEmpty()) {
             return ResponseEntity.status(400).body(new BackendResponse("Lastname cannot be empty"));
         } else {
-            user.setLastname(userFormDto.getLastname());
+            user.setLastname(userDto.getLastname());
         }
-        if (userFormDto.getEmail() == null || userFormDto.getEmail().isEmpty()) {
+        if (userDto.getEmail() == null || userDto.getEmail().isEmpty()) {
             return ResponseEntity.status(400).body(new BackendResponse("Empty or Invalid email address"));
-        } else if (userRepository.existsByEmail(userFormDto.getEmail())) {
+        } else if (userRepository.existsByEmail(userDto.getEmail())) {
             return ResponseEntity.status(400).body(new BackendResponse("Email address already in use"));
         } else {
-            user.setEmail(userFormDto.getEmail());
+            user.setEmail(userDto.getEmail());
         }
-        if (userFormDto.getPassword() == null || userFormDto.getPassword().isEmpty()) {
+        if (userDto.getPassword() == null || userDto.getPassword().isEmpty()) {
             return ResponseEntity.status(400).body(new BackendResponse("Password cannot be empty"));
         } else {
             try {
-                user.setPassword(encoder.encode(userFormDto.getPassword()));
+                user.setPassword(encoder.encode(userDto.getPassword()));
             } catch (Exception e) {
                 e.printStackTrace();
                 return ResponseEntity.status(400).body(new BackendResponse("Invalid password | Password cannot be empty | Password not hashed"));
@@ -73,15 +73,16 @@ public class UserService {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(new BackendResponse("Error creating user"));
-        }return ResponseEntity.status(201).body(new BackendResponse("User created", user));
+        }
+        return ResponseEntity.status(201).body(new BackendResponse("User created", user));
     }
 
-    public ResponseEntity<BackendResponse> loginUser(UserFormDto userFormDto, HttpSession session) {
-        User user = userRepository.findByEmail(userFormDto.getEmail());
-        if ( user == null || userFormDto.getEmail().isEmpty()){
+    public ResponseEntity<BackendResponse> loginUser(UserDto userDto, HttpSession session) {
+        User user = userRepository.findByEmail(userDto.getEmail());
+        if ( user == null || userDto.getEmail().isEmpty()){
             return ResponseEntity.status(401).body(new BackendResponse("Email address not found"));
         }
-        if (!encoder.matches(userFormDto.getPassword(), user.getPassword())){
+        if (!encoder.matches(userDto.getPassword(), user.getPassword())){
             return ResponseEntity.status(401).body(new BackendResponse("Invalid password"));
         }
         String userToken = JwtToken.tokenGenerator(user.getFirstname(), user.getLastname(), user.getEmail());
@@ -115,4 +116,5 @@ public class UserService {
         session.removeAttribute("email");
         return ResponseEntity.status(200).body(new BackendResponse("Logged out"));
     }
+
 }
