@@ -77,6 +77,7 @@ public class JwtToken {
     public static Jws<Claims> verifyToken(String token) {
         if (token == null || token.isEmpty() || revokedTokens.contains(token)) {
             return null;
+            // aggiungere la risposta con status e body e messagge!!!!
         }
         try {
             return Jwts.parser()
