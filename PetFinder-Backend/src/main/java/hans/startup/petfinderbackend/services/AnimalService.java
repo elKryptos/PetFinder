@@ -8,8 +8,11 @@ import hans.startup.petfinderbackend.utils.JwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 import static hans.startup.petfinderbackend.services.UserService.revokedTokens;
 
@@ -23,10 +26,18 @@ public class AnimalService {
         String token = auth.substring(7);
         Jws<Claims> claims = JwtToken.verifyToken(token);
         if (claims == null || token.isEmpty() || revokedTokens.contains(token)) {
-            return ResponseEntity.status()
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(new BackendResponse("Authentication required, login please"));
         }
 
         Animal animal = new Animal();
+        animal.setAnimalName(animalDto.getAnimalName());
+        animal.setAnimalType(animalDto.getAnimalType());
+        animal.setAnimalBreed(animalDto.getAnimalBreed());
+        animal.setAnimalColor(animalDto.getAnimalColor());
+        animal.setDescription(animalDto.getDescription());
+        animal.setLostDate(LocalDateTime.now());
 
         return null;
     }
