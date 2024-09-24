@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -76,16 +77,18 @@ public class FileSystemStorageService implements StorageService {
             } else {
                 throw new ResourceNotFoundException("Could not read file: " + filename);
             }
-        }
-        catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             throw new ResourceNotFoundException("Could not read file: " + filename, e);
         }
     }
 
     @Override
-    public void deleteAll() {
-        FileSystemUtils.deleteRecursively(rootLocation.toFile());
+    public void delete(String filename) {
+        Path file = load(filename);
+        try {
+            FileSystemUtils.deleteRecursively(file);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete file: " + filename, e);
+        }
     }
-
-
 }
