@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import static hans.startup.petfinderbackend.services.UserService.revokedTokens;
 
@@ -19,8 +20,9 @@ import static hans.startup.petfinderbackend.services.UserService.revokedTokens;
 public class AnimalService {
 
     AnimalRepository animalRepository;
+    StorageService storageService;
 
-    public ResponseEntity<BackendResponse> addAnimal(String auth, AnimalDto animalDto) {
+    public ResponseEntity<BackendResponse> addAnimal(@RequestHeader ("Authorization") String auth, AnimalDto animalDto) {
         String token = auth.substring(7);
         Jws<Claims> claims = JwtToken.verifyToken(token);
         if (claims == null || token.isEmpty() || revokedTokens.contains(token)) {
@@ -28,6 +30,12 @@ public class AnimalService {
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(new BackendResponse("Authentication required, login please"));
         }
+
+        if(animalDto.getImageFile() == null || animalDto.getImageFile().isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new BackendResponse("Image file is required"));
+            }
 
         Animal animal = new Animal();
         animal.setAnimalName(animalDto.getAnimalName());
@@ -37,11 +45,15 @@ public class AnimalService {
         animal.setDescription(animalDto.getDescription());
         animal.setLostDate(animalDto.getLostDate());
         animal.setStatus(Animal.Status.Lost);
-        // In work method for upload a file, is this case it will be an image.
-        // Add after finishing FileSystemStorageService
+        String imagePath = storageService.store(animalDto.getImageFile());
+        animal.setImagePath(imagePath);
         animalRepository.save(animal);
 
-        return null;
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new BackendResponse("Animal announcement created successfully"));
     }
+
+    public ResponseEntity<>
 
 }

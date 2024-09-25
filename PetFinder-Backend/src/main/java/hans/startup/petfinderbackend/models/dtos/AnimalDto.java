@@ -24,6 +24,5 @@ public class AnimalDto {
     private LocalDateTime lostDate;
     @NotNull
     private Animal.Status status;
-    @NotBlank
-    private MultipartFile image;
+    private MultipartFile imageFile;
 }
