@@ -1,9 +1,10 @@
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
+!mediafiles
 !**/src/main/**/target/
 !**/src/test/**/target/
-!mediafiles
+
 
 ### STS ###
 .apt_generated
