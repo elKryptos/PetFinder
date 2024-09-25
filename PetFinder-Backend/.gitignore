@@ -1,7 +1,7 @@
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
-!mediafiles
+/mediafiles/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
