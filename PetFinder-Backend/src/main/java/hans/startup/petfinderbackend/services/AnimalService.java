@@ -70,7 +70,7 @@ public class AnimalService {
         return animalRepository.findAll();
     }
 
-    //Modificare il metodo fatto non mi convince!!!
+    //Da implementare da zero!
     public ResponseEntity<BackendResponse> findAnimalById(int id) {
     return null;
     }

@@ -140,6 +140,7 @@ public class UserService {
     }
 
     public static Set<String> revokedTokens = new HashSet<>();
+
     public ResponseEntity<BackendResponse> logout(HttpSession session) {
         String token = (String) session.getAttribute("userToken");
         if (token != null) {
@@ -151,5 +152,4 @@ public class UserService {
                 .status(200)
                 .body(new BackendResponse("Logged out"));
     }
-
 }
