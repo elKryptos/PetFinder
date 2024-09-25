@@ -2,7 +2,9 @@ package hans.startup.petfinderbackend.services;
 
 import hans.startup.petfinderbackend.models.dtos.AnimalDto;
 import hans.startup.petfinderbackend.models.entities.Animal;
+import hans.startup.petfinderbackend.models.entities.User;
 import hans.startup.petfinderbackend.repositories.AnimalRepository;
+import hans.startup.petfinderbackend.repositories.UserRepository;
 import hans.startup.petfinderbackend.responses.BackendResponse;
 import hans.startup.petfinderbackend.utils.JwtToken;
 import io.jsonwebtoken.Claims;
@@ -13,12 +15,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.util.List;
+
 import static hans.startup.petfinderbackend.services.UserService.revokedTokens;
 
 @AllArgsConstructor
 @Service
 public class AnimalService {
 
+    private final UserRepository userRepository;
     AnimalRepository animalRepository;
     StorageService storageService;
 
@@ -30,7 +35,13 @@ public class AnimalService {
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(new BackendResponse("Authentication required, login please"));
         }
-
+        String email = claims.getBody().get("email", String.class);
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(new BackendResponse("User not found"));
+        }
         if(animalDto.getImageFile() == null || animalDto.getImageFile().isEmpty()){
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -47,6 +58,7 @@ public class AnimalService {
         animal.setStatus(Animal.Status.Lost);
         String imagePath = storageService.store(animalDto.getImageFile());
         animal.setImagePath(imagePath);
+        animal.setUser(user);
         animalRepository.save(animal);
 
         return ResponseEntity
@@ -54,6 +66,13 @@ public class AnimalService {
                 .body(new BackendResponse("Animal announcement created successfully"));
     }
 
-    public ResponseEntity<>
+    public List<Animal> allAnimals() {
+        return animalRepository.findAll();
+    }
+
+    //Modificare il metodo fatto non mi convince!!!
+    public ResponseEntity<BackendResponse> findAnimalById(int id) {
+    return null;
+    }
 
 }
