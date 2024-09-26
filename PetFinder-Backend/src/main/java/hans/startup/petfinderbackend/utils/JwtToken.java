@@ -56,10 +56,10 @@ public class JwtToken {
         }
     }
 
-    public static String tokenGenerator(String fisrtname, String lastname, String email) {
+    public static String tokenGenerator(String firstname, String lastname, String email) {
         try {
             return Jwts.builder()
-                    .claim("firstname", fisrtname)
+                    .claim("firstname", firstname)
                     .claim("lastname", lastname)
                     .claim("email", email)
                     .setId(UUID.randomUUID().toString())
