@@ -9,6 +9,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -130,11 +131,11 @@ public class UserService {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return ResponseEntity
-                    .status(401)
+                    .status(HttpStatus.NOT_FOUND)
                     .body(new UserResponse("Email address not found"));
         }
         return ResponseEntity
-                .status(200)
+                .status(HttpStatus.OK)
                 .body(new UserResponse("Logged in private area", claims.getBody()));
     }
 
