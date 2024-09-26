@@ -5,7 +5,7 @@ import hans.startup.petfinderbackend.models.entities.Animal;
 import hans.startup.petfinderbackend.models.entities.User;
 import hans.startup.petfinderbackend.repositories.AnimalRepository;
 import hans.startup.petfinderbackend.repositories.UserRepository;
-import hans.startup.petfinderbackend.responses.BackendResponse;
+import hans.startup.petfinderbackend.responses.AnimalResponse;
 import hans.startup.petfinderbackend.utils.JwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -23,29 +23,29 @@ import static hans.startup.petfinderbackend.services.UserService.revokedTokens;
 @Service
 public class AnimalService {
 
-    private final UserRepository userRepository;
+    UserRepository userRepository;
     AnimalRepository animalRepository;
     StorageService storageService;
 
-    public ResponseEntity<BackendResponse> addAnimal(@RequestHeader ("Authorization") String auth, AnimalDto animalDto) {
+    public ResponseEntity<AnimalResponse> addAnimal(@RequestHeader ("Authorization") String auth, AnimalDto animalDto) {
         String token = auth.substring(7);
         Jws<Claims> claims = JwtToken.verifyToken(token);
         if (claims == null || token.isEmpty() || revokedTokens.contains(token)) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body(new BackendResponse("Authentication required, login please"));
+                    .body(new AnimalResponse("Authentication required, login please"));
         }
         String email = claims.getBody().get("email", String.class);
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body(new BackendResponse("User not found"));
+                    .body(new AnimalResponse("User not found"));
         }
         if(animalDto.getImageFile() == null || animalDto.getImageFile().isEmpty()){
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(new BackendResponse("Image file is required"));
+                    .body(new AnimalResponse("Image file is required"));
             }
 
         Animal animal = new Animal();
@@ -60,18 +60,18 @@ public class AnimalService {
         animal.setImagePath(imagePath);
         animal.setUser(user);
         animalRepository.save(animal);
-
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new BackendResponse("Animal announcement created successfully"));
+                .body(new AnimalResponse("Animal announcement created successfully", animal));
     }
 
-    public List<Animal> allAnimals() {
-        return animalRepository.findAll();
+    public ResponseEntity<AnimalResponse> allAnimals() {
+        List<Animal> animals = animalRepository.findAll();
+        return ResponseEntity.status(200).body(new AnimalResponse("Animals found", animals));
     }
 
     //Da implementare da zero!
-    public ResponseEntity<BackendResponse> findAnimalById(int id) {
+    public ResponseEntity<AnimalResponse> findAnimalById(int id) {
     return null;
     }
 

@@ -13,11 +13,12 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
+@RequestMapping("/v1/user")
 @CrossOrigin
 public class UserController {
     UserService userService;
 
-    @GetMapping("/allUsers")
+    @GetMapping("/all")
     public List<User> allUsers() {
         return userService.allUsers();
     }
