@@ -1,6 +1,7 @@
 package hans.startup.petfinderbackend.services;
 
 import hans.startup.petfinderbackend.models.dtos.AnimalDto;
+import hans.startup.petfinderbackend.models.dtos.AnimalUserDto;
 import hans.startup.petfinderbackend.models.entities.Animal;
 import hans.startup.petfinderbackend.models.entities.User;
 import hans.startup.petfinderbackend.repositories.AnimalRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
+import java.util.Optional;
 
 import static hans.startup.petfinderbackend.services.UserService.revokedTokens;
 
@@ -70,9 +72,18 @@ public class AnimalService {
         return ResponseEntity.status(200).body(new AnimalResponse("Animals found", animals));
     }
 
-    //Da implementare da zero!
-    public ResponseEntity<AnimalResponse> findAnimalById(int id) {
-    return null;
+    public ResponseEntity<AnimalResponse> getAnimalById(int id) {
+        Optional<Animal> animalOptional = animalRepository.findById(id);
+        if (!animalOptional.isPresent() || animalOptional.get().getUser() == null) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new AnimalResponse("Animal not found"));
+        }
+        Animal animal = animalOptional.get();
+        AnimalUserDto animalUserDto = new AnimalUserDto(animal);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new AnimalResponse("Animal found", animalUserDto));
     }
 
 }

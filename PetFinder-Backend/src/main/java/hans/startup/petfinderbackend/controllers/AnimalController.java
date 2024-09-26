@@ -22,7 +22,7 @@ public class AnimalController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AnimalResponse> getAnimalById(@PathVariable int id) {
-        return animalService.findAnimalById(id);
+        return animalService.getAnimalById(id);
     }
 
     @PostMapping("/add")
