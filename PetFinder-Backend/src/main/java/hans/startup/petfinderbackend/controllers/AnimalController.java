@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("v1/animal")
 @CrossOrigin
 public class AnimalController {
-
-    private final AnimalService animalService;
+    AnimalService animalService;
 
     @GetMapping("/all")
     public ResponseEntity<AnimalResponse> getAllAnimals() {
