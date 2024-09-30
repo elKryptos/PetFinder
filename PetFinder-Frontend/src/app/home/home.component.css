@@ -1,23 +1,27 @@
-p{
-    font-size: 7rem;
-}
-
-.text1{
+.text-1{
+    font-size: 5rem;
     margin-top: 8%;
     margin-left: 5%;
 }
 
-.text2 {
+.text-2 {
+    font-size: 5rem;
     margin-top: 2%;
     margin-left: 15%;
 }
 
+.text-3{
+    font-size: 4rem;
+    text-align: center;
+    margin-top: 5%;
+}
+
 .button-container{
-    margin-left: 12%;
+    margin-left: 3%;
+    margin-top: 4%;
 }
 
 .glow-on-hover {
-    margin-top: 10%;
     margin-left: 4%;
     width: 220px;
     height: 50px;
@@ -76,8 +80,7 @@ p{
 
 
 .glow-on-hover1 {
-    margin-top: 10%;
-    margin-left: 4%;
+    margin-left: 10%;
     width: 220px;
     height: 50px;
     border: none;
@@ -94,7 +97,7 @@ p{
 
 .glow-on-hover1:before {
     content: '';
-    background: linear-gradient(45deg, #ffba5c, #ffd085, #ffe1a0, #f0a25a, #eb8f4d, #ff9b31, #ff9f43, #ff9500, #ff7400);
+    background: linear-gradient(45deg, #ffa21f, #fea81c, #febc2e, #f0a25a, #eb8f4d, #ff9b31, #ff9f43, #ff9500, #ff7400);
     position: absolute;
     top: -2px;
     left:-2px;
