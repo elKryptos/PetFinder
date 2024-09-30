@@ -1,0 +1,27 @@
+
+.header {
+    background-color: #fbae60;
+    display: flex;
+    align-items: center;
+    padding: 10px; 
+}
+
+.logo img{
+    width: 250px;
+    height: auto;
+}
+  
+.navigation {
+    display: flex;
+}
+
+.navigation a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: black; 
+}
+  
+.navigation a:last-child {
+    margin-right: 0;
+}
+
