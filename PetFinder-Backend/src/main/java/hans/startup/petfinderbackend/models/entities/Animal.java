@@ -21,6 +21,7 @@ public class Animal {
     private String animalColor;
     private String description;
     private String imagePath;
+    private LocalDateTime createdAt;
     private LocalDateTime lostDate;
 
     @Enumerated(EnumType.STRING)

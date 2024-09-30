@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +57,7 @@ public class AnimalService {
         animal.setAnimalBreed(animalDto.getAnimalBreed());
         animal.setAnimalColor(animalDto.getAnimalColor());
         animal.setDescription(animalDto.getDescription());
+        animal.setCreatedAt(LocalDateTime.now());
         animal.setLostDate(animalDto.getLostDate());
         animal.setStatus(Animal.Status.Lost);
         String imagePath = storageService.store(animalDto.getImageFile());

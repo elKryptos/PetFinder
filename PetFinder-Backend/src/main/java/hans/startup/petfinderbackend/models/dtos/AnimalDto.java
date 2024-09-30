@@ -21,6 +21,8 @@ public class AnimalDto {
     @NotBlank
     private String description;
     @NotBlank
+    private LocalDateTime createdAt;
+    @NotBlank
     private LocalDateTime lostDate;
     @NotNull
     private Animal.Status status;

@@ -14,6 +14,7 @@ public class AnimalUserDto {
     private String animalColor;
     private String description;
     private String imagePath;
+    private LocalDateTime createdAt;
     private LocalDateTime lostDate;
     private Animal.Status status;
 
@@ -31,6 +32,7 @@ public class AnimalUserDto {
         this.animalColor = animal.getAnimalColor();
         this.description = animal.getDescription();
         this.imagePath = animal.getImagePath();
+        this.createdAt = animal.getCreatedAt();
         this.lostDate = animal.getLostDate();
         this.status = animal.getStatus();
         this.firstname = animal.getUser().getFirstname();
