@@ -11,6 +11,8 @@ import { VolunteeringComponent } from './volunteering/volunteering.component';
 import { HelpPageComponent } from './help-page/help-page.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { RegistrationComponent } from './registration/registration.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -99,8 +99,14 @@ public class UserService {
     }
 
     public ResponseEntity<UserResponse> loginUser(UserDto userDto, HttpSession session) {
+        if (userDto == null || userDto.getEmail() == null || userDto.getEmail().isEmpty()) {
+            return ResponseEntity
+                    .status(401)
+                    .body(new UserResponse("Email address/password are missing or invalid"));
+        }
+
         User user = userRepository.findByEmail(userDto.getEmail());
-        if ( user == null || userDto.getEmail().isEmpty()){
+        if (user == null){
             return ResponseEntity
                     .status(401)
                     .body(new UserResponse("Email address not found"));
