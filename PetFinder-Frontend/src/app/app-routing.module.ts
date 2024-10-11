@@ -8,6 +8,7 @@ import { VolunteeringComponent } from './volunteering/volunteering.component';
 import { HelpPageComponent } from './help-page/help-page.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { LogoutComponent } from './logout/logout.component';
 
 const routes: Routes = [
   { path: "home", component: HomeComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: "volunteering" , component: VolunteeringComponent },
   { path: "help-page", component: HelpPageComponent },
   { path: "login", component: LoginComponent },
+  { path: "logout", component: LogoutComponent },
   { path: "registration", component: RegistrationComponent },
   { path: "**", redirectTo: "/home", pathMatch: 'full'},
 ];

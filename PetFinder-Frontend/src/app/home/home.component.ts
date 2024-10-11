@@ -11,6 +11,6 @@ export class HomeComponent {
   constructor(private router: Router) {}
 
   lostPets() {
-    this.router.navigateByUrl("/lostPets")
+    this.router.navigateByUrl("/lost-pets")
   }
 }

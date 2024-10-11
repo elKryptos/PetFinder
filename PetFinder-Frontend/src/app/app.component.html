@@ -12,8 +12,9 @@
   </div>
   <div class="auth-links">
     <!-- <img class="user-image" src="assets/user.png"> -->
-    <a routerLink="/login">Login</a>
-    <a routerLink="/registration">Registration</a>
+    <a *ngIf="!isLoggedIn" routerLink="/login">Login</a>
+    <a *ngIf="!isLoggedIn" routerLink="/registration">Registration</a>
+    <a *ngIf="isLoggedIn" routerLink="/logout">Logout</a>
   </div>
 </div>
 <router-outlet></router-outlet>
