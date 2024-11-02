@@ -73,8 +73,7 @@ public class AnimalService {
         animalRepository.save(animal);
 
         AnimalDto responseDto = animalMapper.toDto(animal);
-
-
+        
         if (animalDto.getImageFile() != null) {
             try (InputStream inputStream = animalDto.getImageFile().getInputStream()) {
                 byte[] imageBytes = inputStream.readAllBytes(); // Legge tutti i byte
