@@ -68,12 +68,13 @@ public class AnimalService {
         Animal animal = animalMapper.toEntity(animalDto);
         String imagePath = storageService.store(animalDto.getImageFile());
         animal.setImagePath(imagePath);
+        animal.setCreatedAt(LocalDateTime.now());
         animal.setUser(user);
         animalRepository.save(animal);
 
         AnimalDto responseDto = animalMapper.toDto(animal);
 
-        
+
         if (animalDto.getImageFile() != null) {
             try (InputStream inputStream = animalDto.getImageFile().getInputStream()) {
                 byte[] imageBytes = inputStream.readAllBytes(); // Legge tutti i byte

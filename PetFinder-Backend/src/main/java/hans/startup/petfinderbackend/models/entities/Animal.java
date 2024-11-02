@@ -28,8 +28,8 @@ public class Animal {
     private Status status;
 
     public enum Status{
-        Lost,
-        Found
+        LOST,
+        FOUND
     }
 
     @ManyToOne
