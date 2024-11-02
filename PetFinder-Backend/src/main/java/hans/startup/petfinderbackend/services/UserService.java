@@ -2,32 +2,39 @@ package hans.startup.petfinderbackend.services;
 
 import hans.startup.petfinderbackend.models.dtos.UserDto;
 import hans.startup.petfinderbackend.models.entities.User;
+import hans.startup.petfinderbackend.models.mappers.UserMapper;
 import hans.startup.petfinderbackend.repositories.UserRepository;
+import hans.startup.petfinderbackend.responses.Response;
 import hans.startup.petfinderbackend.responses.UserResponse;
 import hans.startup.petfinderbackend.utils.JwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class UserService {
 
-    UserRepository userRepository;
-    BCryptPasswordEncoder encoder;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
+    private final UserMapper userMapper;
 
-    public List<User> allUsers() {
-        return userRepository.findAll();
+    public Response<List<UserDto>> allUsers() {
+        List<User> users = userRepository.findAll();
+        List<UserDto> userDtos = userMapper.toDtoList(users);
+        return new Response<>("Users found", userDtos);
     }
 
     public ResponseEntity<UserResponse> findUserById (int id){
@@ -147,7 +154,7 @@ public class UserService {
 
     public static Set<String> revokedTokens = new HashSet<>();
 
-    public ResponseEntity<UserResponse> logout(HttpSession session) {
+    public ResponseEntity<UserResponse> logout (HttpSession session) {
         String token = (String) session.getAttribute("userToken");
         if (token != null) {
             revokedTokens.add(token);
