@@ -27,4 +27,5 @@ public class AnimalDto {
     @NotNull
     private Animal.Status status;
     private MultipartFile imageFile;
+    private String imageFileBase64;
 }
