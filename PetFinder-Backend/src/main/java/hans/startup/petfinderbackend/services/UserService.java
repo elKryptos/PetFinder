@@ -45,59 +45,9 @@ public class UserService {
 
     }
 
-    public ResponseEntity<UserResponse> createUser(UserDto userDto) {
+    public Response<UserDto> createUser(UserDto userDto) {
         User user = new User();
-        if (userDto.getFirstname() == null || userDto.getFirstname().isEmpty()) {
-            return ResponseEntity
-                    .status(400)
-                    .body(new UserResponse("Firstname cannot be empty"));
-        } else {
-            user.setFirstname(userDto.getFirstname());
-        }
-        if (userDto.getLastname() == null || userDto.getLastname().isEmpty()) {
-            return ResponseEntity
-                    .status(400)
-                    .body(new UserResponse("Lastname cannot be empty"));
-        } else {
-            user.setLastname(userDto.getLastname());
-        }
-        if (userDto.getEmail() == null || userDto.getEmail().isEmpty()) {
-            return ResponseEntity
-                    .status(400)
-                    .body(new UserResponse("Empty or Invalid email address"));
-        } else if (userRepository.existsByEmail(userDto.getEmail())) {
-            return ResponseEntity
-                    .status(400)
-                    .body(new UserResponse("Email address already in use"));
-        } else {
-            user.setEmail(userDto.getEmail());
-        }
-        if (userDto.getPassword() == null || userDto.getPassword().isEmpty()) {
-            return ResponseEntity
-                    .status(400)
-                    .body(new UserResponse("Password cannot be empty"));
-        } else {
-            try {
-                user.setPassword(encoder.encode(userDto.getPassword()));
-            } catch (Exception e) {
-                e.printStackTrace();
-                return ResponseEntity
-                        .status(400)
-                        .body(new UserResponse("Invalid password | Password cannot be empty | Password not hashed"));
-            }
-        }
-        user.setRegistrationDate(LocalDateTime.now());
-        try {
-            userRepository.save(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity
-                    .status(500)
-                    .body(new UserResponse("Error creating user"));
-        }
-        return ResponseEntity
-                .status(201)
-                .body(new UserResponse("User created", user));
+        return null;
     }
 
     public ResponseEntity<UserResponse> loginUser(UserDto userDto, HttpSession session) {
