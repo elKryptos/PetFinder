@@ -56,7 +56,6 @@ public class UserService {
                     .status(401)
                     .body(new UserResponse("Email address/password are missing or invalid"));
         }
-
         User user = userRepository.findByEmail(userDto.getEmail());
         if (user == null){
             return ResponseEntity
