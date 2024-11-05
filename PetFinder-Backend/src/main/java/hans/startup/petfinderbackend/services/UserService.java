@@ -140,7 +140,7 @@ public class UserService {
                     .status(401)
                     .body(new UserResponse("Invalid token"));
         }
-        String email = claims.getBody().get("email", String.class);
+        String email = claims.getPayload().get("email", String.class);
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return ResponseEntity

@@ -1,10 +1,8 @@
 package hans.startup.petfinderbackend.controllers;
 
 import hans.startup.petfinderbackend.models.dtos.AnimalDto;
-import hans.startup.petfinderbackend.responses.AnimalResponse;
 import hans.startup.petfinderbackend.responses.Response;
 import hans.startup.petfinderbackend.services.AnimalService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
