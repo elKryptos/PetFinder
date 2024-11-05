@@ -31,23 +31,24 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Response<UserDto>> findUserById(@PathVariable int id) {
         Response<UserDto> response = userService.findUserById(id);
-        if (response == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<UserResponse> createUser(@RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
+    public ResponseEntity<Response<UserDto>> createUser(@RequestBody UserDto userDto) {
+        Response<UserDto> response = userService.createUser(userDto);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponse> login(@RequestBody UserDto userDto, HttpSession session) {
-        return userService.loginUser(userDto, session);
+    public ResponseEntity<Response<String>> login(@RequestBody UserDto userDto, HttpSession session) {
+        Response<String> response = userService.loginUser(userDto, session);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/private")

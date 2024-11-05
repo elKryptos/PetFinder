@@ -46,34 +46,28 @@ public class UserService {
     }
 
     public Response<UserDto> createUser(UserDto userDto) {
-        User user = new User();
-        return null;
+        User user = userMapper.toEntity(userDto);
+        user.setRegistrationDate(LocalDateTime.now());
+        user.setPassword(encoder.encode(userDto.getPassword()));
+        userRepository.save(user);
+        return new Response<>("User created", userMapper.toDto(user));
     }
 
-    public ResponseEntity<UserResponse> loginUser(UserDto userDto, HttpSession session) {
-        if (userDto == null || userDto.getEmail() == null || userDto.getEmail().isEmpty()) {
-            return ResponseEntity
-                    .status(401)
-                    .body(new UserResponse("Email address/password are missing or invalid"));
+    public Response<String> loginUser(UserDto userDto, HttpSession session) {
+        if (userDto.getEmail().isEmpty()) {
+            throw new RuntimeException("Email non fornita");
         }
-        
         User user = userRepository.findByEmail(userDto.getEmail());
-        if (user == null){
-            return ResponseEntity
-                    .status(401)
-                    .body(new UserResponse("Email address not found"));
+        if (user == null || userDto.getEmail().isEmpty()){
+            throw new RuntimeException("Email or User not trovato");// creare UserNotFoundException
         }
         if (!encoder.matches(userDto.getPassword(), user.getPassword())){
-            return ResponseEntity
-                    .status(401)
-                    .body(new UserResponse("Invalid password"));
+            throw new RuntimeException("Password incorreto"); // creare InvalidPasswordException
         }
         String userToken = JwtToken.tokenGenerator(user.getFirstname(), user.getLastname(), user.getEmail());
         session.setAttribute("userToken", userToken);
         session.setAttribute("email", user.getEmail());
-        return ResponseEntity
-                .status(200)
-                .body(new UserResponse(userToken, user.getEmail()));
+        return new Response<>("Loggato correttamente", userToken);
     }
 
     public ResponseEntity<UserResponse> privateArea(HttpSession session, String auth) {
