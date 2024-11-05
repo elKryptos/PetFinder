@@ -32,8 +32,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> findUserById(@PathVariable int id) {
-        return userService.findUserById(id);
+    public ResponseEntity<Response<UserDto>> findUserById(@PathVariable int id) {
+        Response<UserDto> response = userService.findUserById(id);
+        if (response == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/create")

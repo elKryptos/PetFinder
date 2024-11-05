@@ -12,6 +12,7 @@ import io.jsonwebtoken.Jws;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,17 +38,11 @@ public class UserService {
         return new Response<>("Users found", userDtos);
     }
 
-    public ResponseEntity<UserResponse> findUserById (int id){
-        if (!userRepository.existsById(id)) {
-            return ResponseEntity
-                    .status(404)
-                    .body(new UserResponse("User with id " + id + " not found"));
-        } else {
-            User user = userRepository.findById(id).get();
-            return ResponseEntity
-                    .status(200)
-                    .body(new UserResponse("User " + id + " found", user));
-        }
+    public Response<UserDto> findUserById (int id){
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("User with id " + id + " not found"));
+        return new Response<>("User found", userMapper.toDto(user));
+
     }
 
     public ResponseEntity<UserResponse> createUser(UserDto userDto) {
