@@ -5,21 +5,15 @@ import hans.startup.petfinderbackend.models.entities.User;
 import hans.startup.petfinderbackend.models.mappers.UserMapper;
 import hans.startup.petfinderbackend.repositories.UserRepository;
 import hans.startup.petfinderbackend.responses.Response;
-import hans.startup.petfinderbackend.responses.UserResponse;
 import hans.startup.petfinderbackend.utils.JwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import jakarta.servlet.http.HttpSession;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -70,38 +64,30 @@ public class UserService {
         return new Response<>("Loggato correttamente", userToken);
     }
 
-    public ResponseEntity<UserResponse> privateArea(HttpSession session, String auth) {
+    public Response<String> privateArea(HttpSession session, String auth) {
         String token = auth.substring(7);
         Jws<Claims> claims = JwtToken.verifyToken(token);
         System.out.println(claims);
         if (claims == null) {
-            return ResponseEntity
-                    .status(401)
-                    .body(new UserResponse("Invalid token"));
+            throw new RuntimeException("Token not valid");
         }
         String email = claims.getPayload().get("email", String.class);
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(new UserResponse("Email address not found"));
+            throw new RuntimeException("Mail not found");
         }
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(new UserResponse("Logged in private area", claims.getBody()));
+        return new Response<>("Logged in private area", email);
     }
 
     public static Set<String> revokedTokens = new HashSet<>();
 
-    public ResponseEntity<UserResponse> logout (HttpSession session) {
+    public Response<String> logout (HttpSession session) {
         String token = (String) session.getAttribute("userToken");
         if (token != null) {
             revokedTokens.add(token);
         }
         session.removeAttribute("userToken");
         session.removeAttribute("email");
-        return ResponseEntity
-                .status(200)
-                .body(new UserResponse("Logged out"));
+        return new Response<>("Logged out");
     }
 }

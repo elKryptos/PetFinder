@@ -10,7 +10,6 @@ import hans.startup.petfinderbackend.responses.Response;
 import hans.startup.petfinderbackend.utils.JwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

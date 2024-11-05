@@ -1,10 +1,8 @@
 package hans.startup.petfinderbackend.controllers;
 
 import hans.startup.petfinderbackend.models.dtos.UserDto;
-import hans.startup.petfinderbackend.models.entities.User;
 import hans.startup.petfinderbackend.models.mappers.UserMapper;
 import hans.startup.petfinderbackend.responses.Response;
-import hans.startup.petfinderbackend.responses.UserResponse;
 import hans.startup.petfinderbackend.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -52,13 +50,15 @@ public class UserController {
     }
 
     @PostMapping("/private")
-    public ResponseEntity<UserResponse> privateArea(HttpSession session, @RequestHeader ("Authorization") String auth) {
-        return userService.privateArea(session, auth);
+    public ResponseEntity<Response<String>> privateArea(HttpSession session, @RequestHeader ("Authorization") String auth) {
+        Response<String> response = userService.privateArea(session, auth);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<UserResponse> logout(HttpSession session) {
-        return userService.logout(session);
+    public ResponseEntity<Response<String>> logout(HttpSession session) {
+        Response<String> response = userService.logout(session);
+        return ResponseEntity.ok(response);
     }
 
 }

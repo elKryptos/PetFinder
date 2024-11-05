@@ -3,7 +3,6 @@ package hans.startup.petfinderbackend.responses;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.mapstruct.Mapper;
 
 @Setter
 @Getter
