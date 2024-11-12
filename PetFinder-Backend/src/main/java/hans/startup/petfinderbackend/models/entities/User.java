@@ -15,6 +15,7 @@ public class User {
     private Integer userId;
     private String firstname;
     private String lastname;
+    @Column(unique = true, nullable = false)
     private String email;
     private String password;
     private String resetToken;
@@ -22,7 +23,7 @@ public class User {
     private LocalDateTime registrationDate;
     private LocalDateTime lastLogin;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Animal> animals;
 
 }

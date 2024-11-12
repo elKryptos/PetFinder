@@ -44,7 +44,7 @@ public class UserService {
         user.setRegistrationDate(LocalDateTime.now());
         user.setPassword(encoder.encode(userDto.getPassword()));
         userRepository.save(user);
-        return new Response<>("User created", userMapper.toDto(user));
+        return new Response<>("User created");
     }
 
     public Response<String> loginUser(UserDto userDto, HttpSession session) {

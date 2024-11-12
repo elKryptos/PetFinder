@@ -1,5 +1,6 @@
 package hans.startup.petfinderbackend.responses;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,6 +8,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Response <TYPE> {
     private String msg;
     private TYPE type;

@@ -37,7 +37,7 @@ public class Animal {
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<AnimalReport> animalReport;
 
 }
