@@ -37,13 +37,13 @@ CREATE TABLE animal (
     FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
 
-CREATE TABLE reporters (
+CREATE TABLE reporter (
     reporter_id INT AUTO_INCREMENT PRIMARY KEY,
     reporter_name VARCHAR(100),
     reporter_email VARCHAR(100)
 );
 
-CREATE TABLE animal_reports (
+CREATE TABLE animal_report (
     animal_report_id INT AUTO_INCREMENT PRIMARY KEY,
     animal_id INT NOT NULL,
     reporter_id INT NOT NULL,
@@ -51,10 +51,10 @@ CREATE TABLE animal_reports (
     note TEXT,
     location_reported VARCHAR(255),
     FOREIGN KEY (animal_id) REFERENCES animal(animal_id),
-    FOREIGN KEY (reporter_id) REFERENCES reporters(reporter_id)
+    FOREIGN KEY (reporter_id) REFERENCES reporter(reporter_id)
 );
 
-CREATE TABLE animal_photos (
+CREATE TABLE animal_photo (
     photo_id INT AUTO_INCREMENT PRIMARY KEY,
     animal_id INT NOT NULL,
     photo_path VARCHAR(255),
@@ -62,7 +62,7 @@ CREATE TABLE animal_photos (
     FOREIGN KEY (animal_id) REFERENCES animal(animal_id)
 );
 
-CREATE TABLE animal_locations (
+CREATE TABLE animal_location (
     location_id INT AUTO_INCREMENT PRIMARY KEY,
     animal_id INT NOT NULL,
     location VARCHAR(255) NOT NULL,

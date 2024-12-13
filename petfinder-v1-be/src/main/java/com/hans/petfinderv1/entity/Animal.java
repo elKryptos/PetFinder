@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "animal")
@@ -32,4 +33,13 @@ public class Animal {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
+
+    @OneToMany(mappedBy = "animal")
+    private List<AnimalReport> animalReportList;
+
+    @OneToMany(mappedBy = "animal")
+    private List<AnimalLocation> animalLocationList;
+
+    @OneToMany(mappedBy = "animal")
+    private List<AnimalPhoto> animalPhotoList;
 }
