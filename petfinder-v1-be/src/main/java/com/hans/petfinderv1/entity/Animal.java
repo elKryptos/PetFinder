@@ -1,0 +1,35 @@
+package com.hans.petfinderv1.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "animal")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Animal {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long animalId;
+    private String animalName;
+    private String animalType;
+    private String animalBreed;
+    private String animalColor;
+    private String description;
+    private String imagePath;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime lostDate;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id", referencedColumnName = "statusId")
+    private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    private User user;
+}
