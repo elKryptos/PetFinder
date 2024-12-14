@@ -3,6 +3,7 @@ package hans.startup.petfinderbackend.exceptions;
 import hans.startup.petfinderbackend.responses.Response;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -59,5 +60,17 @@ public class BackendResponse {
                 errors
         );
         return new Response("Bad Request", errorDetails);
+    }
+
+    @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
+    public <T> Response<T> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e,
+                                                               HttpServletRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                e.getMessage(),
+                request.getRequestURI(),
+                HttpStatus.METHOD_NOT_ALLOWED
+        );
+        return new Response("Method Not Allowed", errorDetails);
     }
 }
