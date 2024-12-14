@@ -1,21 +1,14 @@
-package hans.startup.petfinderbackend.exceptions;
+package com.hans.petfinderv1.exception;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
-@Setter
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class  ErrorDetails {
+@Setter
+public class ErrorDetails {
     private LocalDateTime timestamp;
     private String message;
     private String details;
@@ -28,4 +21,13 @@ public class  ErrorDetails {
         this.details = details;
         this.status = status;
     }
+
+    public ErrorDetails(LocalDateTime timestamp, String message, String details, HttpStatus status, Map<String, String> errors) {
+        this.timestamp = timestamp;
+        this.message = message;
+        this.details = details;
+        this.status = status;
+        this.errors = errors;
+    }
+
 }
