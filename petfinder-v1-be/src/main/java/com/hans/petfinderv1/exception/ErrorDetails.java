@@ -1,6 +1,9 @@
 package com.hans.petfinderv1.exception;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
@@ -8,6 +11,8 @@ import java.util.Map;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorDetails {
     private LocalDateTime timestamp;
     private String message;
@@ -22,12 +27,12 @@ public class ErrorDetails {
         this.status = status;
     }
 
-    public ErrorDetails(LocalDateTime timestamp, String message, String details, HttpStatus status, Map<String, String> errors) {
-        this.timestamp = timestamp;
-        this.message = message;
-        this.details = details;
-        this.status = status;
-        this.errors = errors;
-    }
+//    public ErrorDetails(LocalDateTime timestamp, String message, String details, HttpStatus status, Map<String, String> errors) {
+//        this.timestamp = timestamp;
+//        this.message = message;
+//        this.details = details;
+//        this.status = status;
+//        this.errors = errors;
+//    }
 
 }

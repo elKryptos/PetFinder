@@ -1,4 +1,4 @@
-package com.hans.petfinderv1.entity;
+package com.hans.petfinderv1.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

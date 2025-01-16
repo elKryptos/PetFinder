@@ -1,4 +1,4 @@
-package com.hans.petfinderv1.entity;
+package com.hans.petfinderv1.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,10 +18,11 @@ public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long statusId;
+    private String description;
     @Column(unique = true)
     private String statusName;
-    private String description;
 
     @OneToMany(mappedBy = "status")
     private List<Animal> animalList;
+
 }

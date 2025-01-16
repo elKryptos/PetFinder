@@ -1,4 +1,4 @@
-package com.hans.petfinderv1.dto;
+package com.hans.petfinderv1.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,7 @@
-package com.hans.petfinderv1.mapper;
+package com.hans.petfinderv1.model.mapper;
 
-import com.hans.petfinderv1.dto.AnimalDto;
-import com.hans.petfinderv1.entity.Animal;
+import com.hans.petfinderv1.model.dto.AnimalDto;
+import com.hans.petfinderv1.model.entity.Animal;
 import org.mapstruct.Mapper;
 
 import java.util.List;
