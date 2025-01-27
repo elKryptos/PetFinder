@@ -34,11 +34,10 @@ public class UserService {
     }
 
     public UserDto findByEmail(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException(Constants.MAIL_NOT_FOUND.getMessage()));
-        return userMapper.toDto(user);
+        return userRepository.findByEmail(email)
+                .map(userMapper::toDto)
+                .orElseThrow(() -> new NotFoundException(Constants.USER_NOT_FOUND.getMessage()));
     }
-
 
     public UserDto create(UserDto userDto) {
         boolean emailExists = userRepository.existsByEmail(userDto.getEmail());
