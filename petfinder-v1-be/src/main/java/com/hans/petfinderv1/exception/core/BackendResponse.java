@@ -1,5 +1,6 @@
 package com.hans.petfinderv1.exception.core;
 
+import com.hans.petfinderv1.exception.DataIntegrityViolationException;
 import com.hans.petfinderv1.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.lang.IllegalArgumentException;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -46,19 +48,32 @@ public class BackendResponse {
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
     }
-//
-//
-//    @ExceptionHandler(DataIntegrityViolationException.class)
-//    public ResponseEntity<ErrorDetails> handleDataIntegrityViolationException(DataIntegrityViolationException e,
-//                                                                              HttpServletRequest request) {
-//
-//        ErrorDetails errorDetails = new ErrorDetails(
-//                LocalDateTime.now(),
-//                e.getMessage(),
-//                request.getRequestURI(),
-//                HttpStatus.CONFLICT
-//        );
-//        return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
-//    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorDetails> handleDataIntegrityViolationException(DataIntegrityViolationException e,
+                                                                              HttpServletRequest request) {
+
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                e.getMessage(),
+                request.getRequestURI(),
+                HttpStatus.CONFLICT
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+    }
+
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorDetails> handleIllegalArgumentException(IllegalArgumentException e,
+                                                                              HttpServletRequest request) {
+
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                e.getMessage(),
+                request.getRequestURI(),
+                HttpStatus.CONFLICT
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+    }
 
 }

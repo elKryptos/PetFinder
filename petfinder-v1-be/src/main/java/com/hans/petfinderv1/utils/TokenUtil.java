@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -45,7 +46,7 @@ public class TokenUtil {
             SecretKey secretKey = Keys.hmacShaKeyFor(keyBytes);
             return secretKey;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
@@ -61,11 +62,15 @@ public class TokenUtil {
 
     public Jws<Claims> allClaimsJws(String token) {
         if(token == null) return null;
-        SecretKey secretKey = decoder(privateKey);
-        return Jwts.parser()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token);
+        try {
+            SecretKey key = Keys.hmacShaKeyFor(privateKey.getBytes(StandardCharsets.UTF_8));
+            return Jwts.parser()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
+        } catch(Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
     }
 
     public Boolean isTokenExpired(String token) {
