@@ -1,4 +1,4 @@
-package com.hans.petfinderv1.exception;
+package com.hans.petfinderv1.exception.core;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -26,13 +26,4 @@ public class ErrorDetails {
         this.details = details;
         this.status = status;
     }
-
-//    public ErrorDetails(LocalDateTime timestamp, String message, String details, HttpStatus status, Map<String, String> errors) {
-//        this.timestamp = timestamp;
-//        this.message = message;
-//        this.details = details;
-//        this.status = status;
-//        this.errors = errors;
-//    }
-
 }

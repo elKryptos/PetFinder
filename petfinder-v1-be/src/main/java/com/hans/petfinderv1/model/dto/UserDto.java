@@ -3,6 +3,7 @@ package com.hans.petfinderv1.model.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,14 +16,15 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
     private Long userId;
-    @NotBlank
+    @NotBlank(message = "Firstname cannot be empty")
     private String firstname;
-    @NotBlank
+    @NotBlank(message = "Lastname cannot be empty")
     private String lastname;
-    @Email
+    @Email(message = "Accepted only standard email with '@'")
     @NotBlank
     private String email;
-    @NotBlank
+    @NotBlank(message = "Password cannot be empty")
+    @Size(min = 8, message = "Minimun characters accepted '8'")
     private String password;
     private String resetToken;
 }

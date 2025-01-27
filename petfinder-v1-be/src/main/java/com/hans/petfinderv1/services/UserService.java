@@ -1,17 +1,17 @@
 package com.hans.petfinderv1.services;
 
+import com.hans.petfinderv1.Constants;
 import com.hans.petfinderv1.exception.DataIntegrityViolationException;
+import com.hans.petfinderv1.exception.NotFoundException;
 import com.hans.petfinderv1.model.dto.UserDto;
 import com.hans.petfinderv1.model.entity.User;
 import com.hans.petfinderv1.model.mapper.UserMapper;
 import com.hans.petfinderv1.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,18 +28,22 @@ public class UserService {
     }
 
     public UserDto findById(Long id) {
-        return userRepository.findById(id).map(userMapper::toDto)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        Optional<User> user = Optional.ofNullable(userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Constants.USER_NOT_FOUND.getMessage())));
+        return userMapper.toDto(user.get());
     }
 
     public UserDto findByEmail(String email) {
-        return userMapper.toDto(userRepository.findByEmail(email));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException(Constants.MAIL_NOT_FOUND.getMessage()));
+        return userMapper.toDto(user);
     }
+
 
     public UserDto create(UserDto userDto) {
         boolean emailExists = userRepository.existsByEmail(userDto.getEmail());
         if (emailExists) {
-            throw new DataIntegrityViolationException("Email already exists");
+            throw new DataIntegrityViolationException(Constants.USE_ANOTHER_EMAIL.getMessage());
         }
         User user = userMapper.toEntity(userDto);
         LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
@@ -50,17 +54,16 @@ public class UserService {
 
     public UserDto update(Long id, UserDto userDto) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException(Constants.USER_NOT_FOUND.getMessage()));
         userMapper.updateUser(user, userDto);
-        User savedUser = userRepository.save(user);
-        return userMapper.toDto(savedUser);
+        return userMapper.toDto(userRepository.save(user));
     }
 
     public String delete(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException(Constants.USER_NOT_FOUND.getMessage()));
         userRepository.delete(user);
-        return "User deleted";
+        return Constants.USER_DELETED.getMessage();
     }
 
 }

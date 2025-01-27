@@ -1,8 +1,8 @@
 package com.hans.petfinderv1.controllers;
 
 import com.hans.petfinderv1.model.dto.UserDto;
-import com.hans.petfinderv1.model.entity.User;
 import com.hans.petfinderv1.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,24 +21,36 @@ public class UserController {
     @GetMapping("")
     public ResponseEntity<List<UserDto>> findAll() {
         List<UserDto> userList = userService.findAll();
-        return ResponseEntity.status(HttpStatus.OK.value()).body(userList);
+        return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
 
     @PostMapping("")
-    public ResponseEntity<UserDto> create(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> create(@Valid @RequestBody UserDto userDto) {
        UserDto newUser = userService.create(userDto);
-       return ResponseEntity.status(HttpStatus.CREATED.value()).body(newUser);
+       return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> update(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
         UserDto userUpdated = userService.update(id,userDto);
-        return ResponseEntity.status(HttpStatus.OK.value()).body(userUpdated);
+        return ResponseEntity.status(HttpStatus.OK).body(userUpdated);
     }
 
     @PostMapping("{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         String deletedUser = userService.delete(id);
-        return ResponseEntity.status(HttpStatus.OK.value()).body(deletedUser);
+        return ResponseEntity.status(HttpStatus.OK).body(deletedUser);
+    }
+
+    @GetMapping("id/{id}")
+    public ResponseEntity<UserDto> findById(@PathVariable Long id) {
+        UserDto userDto = userService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(userDto);
+    }
+
+    @GetMapping("email/{email}")
+    public ResponseEntity<UserDto> findByEmail(@PathVariable String email) {
+        UserDto userDto = userService.findByEmail(email);
+        return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }
 }
