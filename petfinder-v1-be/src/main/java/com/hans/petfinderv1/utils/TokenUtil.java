@@ -67,7 +67,7 @@ public class TokenUtil {
             return Jwts.parser()
                     .setSigningKey(key)
                     .build()
-                    .parseClaimsJws(token);
+                    .parseSignedClaims(token);
         } catch(Exception e) {
             throw new IllegalArgumentException(e.getMessage());
         }
