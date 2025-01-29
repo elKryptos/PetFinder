@@ -1,7 +1,6 @@
 package com.hans.petfinderv1.utils;
 
 import com.hans.petfinderv1.model.dto.UserDto;
-import com.hans.petfinderv1.model.entity.User;
 import com.hans.petfinderv1.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -15,18 +14,18 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Base64;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 @Getter
 public class TokenUtil {
 
-    @Value("${jwt.secret.key}$")
+    @Value("${jwt.secret.key}")
     private String privateKey;
 
     private final UserRepository userRepository;
@@ -43,7 +42,6 @@ public class TokenUtil {
 
     public SecretKey decoder(String privateKey) {
         try {
-            System.out.println(privateKey.indexOf(44));
             byte[] keyBytes = Base64.getDecoder().decode(privateKey);
             SecretKey secretKey = Keys.hmacShaKeyFor(keyBytes);
             return secretKey;
