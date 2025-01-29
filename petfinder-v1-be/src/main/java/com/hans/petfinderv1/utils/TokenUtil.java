@@ -1,5 +1,6 @@
 package com.hans.petfinderv1.utils;
 
+import com.hans.petfinderv1.model.dto.UserDto;
 import com.hans.petfinderv1.model.entity.User;
 import com.hans.petfinderv1.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -30,18 +31,19 @@ public class TokenUtil {
 
     private final UserRepository userRepository;
 
-    public String userToken(User user) {
-        userRepository.findByEmail(user.getEmail());
+    public String userToken(UserDto userDto) {
+        userRepository.findByEmail(userDto.getEmail());
         Map<String, Object> claims = new HashMap<>();
-        claims.put("User id: ", user.getUserId());
-        claims.put("Email: ", user.getEmail());
-        claims.put("Firstname: ", user.getFirstname());
-        claims.put("Lastname: ", user.getLastname());
+        claims.put("User id: ", userDto.getUserId());
+        claims.put("Email: ", userDto.getEmail());
+        claims.put("Firstname: ", userDto.getFirstname());
+        claims.put("Lastname: ", userDto.getLastname());
         return tokenGenerator(claims);
     }
 
     public SecretKey decoder(String privateKey) {
         try {
+            System.out.println(privateKey.indexOf(44));
             byte[] keyBytes = Base64.getDecoder().decode(privateKey);
             SecretKey secretKey = Keys.hmacShaKeyFor(keyBytes);
             return secretKey;

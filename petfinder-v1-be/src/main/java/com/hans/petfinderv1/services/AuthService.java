@@ -11,7 +11,6 @@ import com.hans.petfinderv1.utils.TokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -32,11 +31,14 @@ public class AuthService {
                 .build();
     }
 
-//    public AuthDto login(AuthDto authDto) {
-//        Optional<User> user = userRepository.findByEmail(authDto.getEmail());
-//        String token = tokenUtil.userToken(user.getEmail(), user.getFirstname());
-//        return AuthDto.builder()
-//                .response(token)
-//                .build();
-//    }
+    public AuthDto login(AuthDto authDto) {
+        UserDto userDto = userService.findByEmail(authDto.getEmail());
+        if(userDto == null) {
+            throw new NotFoundException(Constants.USER_NOT_FOUND.getMessage());
+        }
+        String token = tokenUtil.userToken(userDto);
+        return AuthDto.builder()
+                .response(token)
+                .build();
+    }
 }
