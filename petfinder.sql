@@ -3,7 +3,7 @@ CREATE SCHEMA petfinder;
 USE petfinder;
 
 CREATE TABLE user (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(50) NOT NULL,
     lastname VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -69,3 +69,14 @@ CREATE TABLE animal_location (
     reported_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (animal_id) REFERENCES animal(animal_id)
 );
+
+CREATE TABLE token_blacklist (
+    token_blacklist_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(512) UNIQUE NOT NULL,
+    expiration DATETIME NOT NULL,
+    user_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE
+);
+
+SHOW CREATE TABLE user;
+

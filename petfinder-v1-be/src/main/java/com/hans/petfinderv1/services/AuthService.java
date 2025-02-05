@@ -41,4 +41,8 @@ public class AuthService {
                 .response(token)
                 .build();
     }
+
+    public AuthDto logout(String token) {
+        return null;
+    }
 }
