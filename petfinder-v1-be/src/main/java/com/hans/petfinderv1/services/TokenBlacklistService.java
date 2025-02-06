@@ -1,0 +1,39 @@
+package com.hans.petfinderv1.services;
+
+import com.hans.petfinderv1.model.dto.UserDto;
+import com.hans.petfinderv1.model.entity.TokenBlacklist;
+import com.hans.petfinderv1.model.entity.User;
+import com.hans.petfinderv1.model.mapper.UserMapper;
+import com.hans.petfinderv1.repository.TokenBlacklistRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+
+@Service
+@RequiredArgsConstructor
+public class TokenBlacklistService {
+
+    private final TokenBlacklistRepository tokenBlacklistRepository;
+    private final UserMapper userMapper;
+
+    public void addToBlacklist(String token, LocalDateTime expiration, UserDto userDto) {
+        System.out.println("user id added to blacklist" + userDto.getUserId());
+        if (userDto == null || userDto.getUserId() == null) {
+            throw new IllegalArgumentException("User information is incomplete.");
+        }
+        User user = userMapper.toEntity(userDto);
+        TokenBlacklist tokenBlacklist = new TokenBlacklist(null, token, expiration, user);
+        tokenBlacklistRepository.save(tokenBlacklist);
+    }
+
+    public boolean isTokenBlacklisted(String token) {
+        return tokenBlacklistRepository.findByToken(token).isPresent();
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void cleanExpiredTokens() {
+        tokenBlacklistRepository.deleteAllByExpirationBefore(LocalDateTime.now());
+    }
+}

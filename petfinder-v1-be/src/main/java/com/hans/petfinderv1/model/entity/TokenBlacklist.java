@@ -24,5 +24,4 @@ public class TokenBlacklist {
     @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
-
 }

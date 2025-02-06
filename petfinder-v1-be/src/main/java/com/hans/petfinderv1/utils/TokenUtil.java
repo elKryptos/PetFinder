@@ -5,6 +5,7 @@ import com.hans.petfinderv1.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +34,10 @@ public class TokenUtil {
     public String userToken(UserDto userDto) {
         userRepository.findByEmail(userDto.getEmail());
         Map<String, Object> claims = new HashMap<>();
-        claims.put("User id: ", userDto.getUserId());
-        claims.put("Email: ", userDto.getEmail());
-        claims.put("Firstname: ", userDto.getFirstname());
-        claims.put("Lastname: ", userDto.getLastname());
+        claims.put("UserId", userDto.getUserId());
+        claims.put("Email", userDto.getEmail());
+        claims.put("Firstname", userDto.getFirstname());
+        claims.put("Lastname", userDto.getLastname());
         return tokenGenerator(claims);
     }
 
@@ -63,7 +64,7 @@ public class TokenUtil {
     public Jws<Claims> allClaimsJws(String token) {
         if(token == null) return null;
         try {
-            SecretKey key = Keys.hmacShaKeyFor(privateKey.getBytes(StandardCharsets.UTF_8));
+            SecretKey key = decoder(privateKey);
             return Jwts.parser()
                     .setSigningKey(key)
                     .build()
@@ -82,6 +83,7 @@ public class TokenUtil {
                 .parseSignedClaims(token)
                 .getPayload();
         Date expiration = claims.getExpiration();
-        return  expiration.after(new Date());
+        // Cambiato il controllo per restituire true se il token è scaduto
+        return expiration.before(new Date());
     }
 }
