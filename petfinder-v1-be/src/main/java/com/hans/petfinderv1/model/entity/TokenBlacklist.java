@@ -1,5 +1,7 @@
 package com.hans.petfinderv1.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +23,7 @@ public class TokenBlacklist {
     private String token;
     private LocalDateTime expiration;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;

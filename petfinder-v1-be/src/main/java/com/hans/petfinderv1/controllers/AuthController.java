@@ -2,7 +2,9 @@ package com.hans.petfinderv1.controllers;
 
 import com.hans.petfinderv1.model.dto.AuthDto;
 import com.hans.petfinderv1.model.dto.UserDto;
+import com.hans.petfinderv1.model.entity.TokenBlacklist;
 import com.hans.petfinderv1.services.AuthService;
+import com.hans.petfinderv1.services.TokenBlacklistService;
 import com.hans.petfinderv1.utils.TokenUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @CrossOrigin
@@ -18,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
-    private final TokenUtil tokenUtil;
+    private final TokenBlacklistService tokenBlacklistService;
 
     @PostMapping("/signin")
     public ResponseEntity<AuthDto> signin(@Valid @RequestBody UserDto userDto) {
@@ -33,5 +37,10 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<AuthDto> logout(@RequestHeader("Authorization") String token) {
         return ResponseEntity.status(HttpStatus.OK).body(authService.logout(token));
+    }
+
+    @GetMapping("/control")
+    public ResponseEntity<List<TokenBlacklist>> control(@RequestBody UserDto userDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(tokenBlacklistService.findByUser(userDto));
     }
 }

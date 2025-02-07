@@ -56,7 +56,7 @@ public class TokenUtil {
         return Jwts.builder()
                 .claims(claims)
                 .setIssuedAt(new Date())
-                .setExpiration(Date.from(Instant.now().plus(2, ChronoUnit.MINUTES)))
+                .setExpiration(Date.from(Instant.now().plus(2, ChronoUnit.HOURS)))
                 .signWith(secretKey)
                 .compact();
     }

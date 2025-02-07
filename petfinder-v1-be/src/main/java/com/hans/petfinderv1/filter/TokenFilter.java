@@ -1,5 +1,6 @@
 package com.hans.petfinderv1.filter;
 
+import com.hans.petfinderv1.Constants;
 import com.hans.petfinderv1.exception.NotFoundException;
 import com.hans.petfinderv1.services.TokenBlacklistService;
 import com.hans.petfinderv1.utils.TokenUtil;
@@ -43,7 +44,7 @@ public class TokenFilter implements Filter {
             try {
                 Jws<Claims> claimsJws = tokenUtil.allClaimsJws(token);
                 if (tokenBlacklistService.isTokenBlacklisted(token)) {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "Token is blacklisted");
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN, Constants.TOKEN_IS_BLACKLISTED.getMessage());
                     return;
                 }
                 if (claimsJws == null) {

@@ -51,7 +51,7 @@ public class AuthService {
 
     public AuthDto logout(String token) {
         if (token == null || token.isBlank()) {
-            throw new IllegalArgumentException("Token non valido o mancante");
+            throw new IllegalArgumentException(Constants.TOKEN_NOT_VALID.getMessage());
         }
         if (token.startsWith("Bearer")) {
             token = token.substring(7).trim();
@@ -66,7 +66,7 @@ public class AuthService {
         LocalDateTime expirationLocalDate = expirationDate.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime();
         tokenBlacklistService.addToBlacklist(token, expirationLocalDate, userDto);
         return AuthDto.builder()
-                .response("Logout successfully")
+                .response(Constants.LOGOUT_SUCCESSFULLY.getMessage())
                 .build();
     }
 }
