@@ -20,7 +20,7 @@ public class TokenBlacklistService {
     private final UserMapper userMapper;
 
     public void addToBlacklist(String token, LocalDateTime expiration, UserDto userDto) {
-        System.out.println("user id added to blacklist" + userDto.getUserId());
+        System.out.println("UserId: " + userDto.getUserId() + " added to the blacklist");
         if (userDto == null || userDto.getUserId() == null) {
             throw new IllegalArgumentException("User information is incomplete.");
         }
@@ -33,7 +33,7 @@ public class TokenBlacklistService {
         return tokenBlacklistRepository.findByToken(token).isPresent();
     }
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     @Transactional
     public void cleanExpiredTokens() {
         try {

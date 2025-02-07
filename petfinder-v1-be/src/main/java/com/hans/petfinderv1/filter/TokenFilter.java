@@ -1,6 +1,7 @@
 package com.hans.petfinderv1.filter;
 
 import com.hans.petfinderv1.exception.NotFoundException;
+import com.hans.petfinderv1.services.TokenBlacklistService;
 import com.hans.petfinderv1.utils.TokenUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -19,6 +20,7 @@ import java.io.IOException;
 public class TokenFilter implements Filter {
 
     private final TokenUtil tokenUtil;
+    private final TokenBlacklistService tokenBlacklistService;
 
     //TODO IMPLEMENT CONTROL FILTER
     @Override
@@ -29,11 +31,21 @@ public class TokenFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
+        String path = request.getRequestURI();
+        if ("/auth/login".equals(path)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String header = request.getHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             try {
                 Jws<Claims> claimsJws = tokenUtil.allClaimsJws(token);
+                if (tokenBlacklistService.isTokenBlacklisted(token)) {
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "Token is blacklisted");
+                    return;
+                }
                 if (claimsJws == null) {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN);
                     return ;
@@ -47,7 +59,9 @@ public class TokenFilter implements Filter {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
+
         filterChain.doFilter(request, response);
+
     }
 
 
