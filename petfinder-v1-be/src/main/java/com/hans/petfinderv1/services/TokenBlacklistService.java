@@ -5,6 +5,7 @@ import com.hans.petfinderv1.model.entity.TokenBlacklist;
 import com.hans.petfinderv1.model.entity.User;
 import com.hans.petfinderv1.model.mapper.UserMapper;
 import com.hans.petfinderv1.repository.TokenBlacklistRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,14 @@ public class TokenBlacklistService {
         return tokenBlacklistRepository.findByToken(token).isPresent();
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 * * * * *")
+    @Transactional
     public void cleanExpiredTokens() {
-        tokenBlacklistRepository.deleteAllByExpirationBefore(LocalDateTime.now());
+        try {
+            tokenBlacklistRepository.deleteAllByExpirationBefore(LocalDateTime.now());
+            System.out.println("Expired tokens removed");
+        } catch (Exception e) {
+            System.out.println("Error removing expired tokens" + e.getMessage());
+        }
     }
 }
