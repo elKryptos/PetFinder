@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequiredArgsConstructor
+@RestController
 @CrossOrigin()
 @RequestMapping("/user")
 public class UserController {
@@ -30,19 +30,19 @@ public class UserController {
        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{userId}")
     public ResponseEntity<UserDto> update(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
-        UserDto userUpdated = userService.update(userId, userDto);
-        return ResponseEntity.status(HttpStatus.OK).body(userUpdated);
+        UserDto updatedUser = userService.update(userId, userDto);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 
-    @PostMapping("{id}")
+    @PostMapping("{userId}")
     public ResponseEntity<String> delete(@PathVariable Long userId) {
         String deletedUser = userService.delete(userId);
         return ResponseEntity.status(HttpStatus.OK).body(deletedUser);
     }
 
-    @GetMapping("id/{id}")
+    @GetMapping("id/{userId}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long userId) {
         UserDto userDto = userService.getUserById(userId);
         return ResponseEntity.status(HttpStatus.OK).body(userDto);

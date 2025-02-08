@@ -55,7 +55,7 @@ public class AuthService {
         }
         Jws<Claims> claimsJws = tokenUtil.allClaimsJws(token);
         Long userId = claimsJws.getBody().get("UserId", Long.class);
-        UserDto userDto = userService.findById(userId);
+        UserDto userDto = userService.getUserById(userId);
         if (userDto == null) {
             throw new NotFoundException(Constants.USER_NOT_FOUND.getMessage());
         }
