@@ -5,7 +5,6 @@ import com.hans.petfinderv1.model.dto.UserDto;
 import com.hans.petfinderv1.model.entity.TokenBlacklist;
 import com.hans.petfinderv1.services.AuthService;
 import com.hans.petfinderv1.services.TokenBlacklistService;
-import com.hans.petfinderv1.utils.TokenUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -3,14 +3,12 @@ package com.hans.petfinderv1.exception.core;
 import com.hans.petfinderv1.exception.DataIntegrityViolationException;
 import com.hans.petfinderv1.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.lang.IllegalArgumentException;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Collectors;

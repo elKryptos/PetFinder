@@ -19,8 +19,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("")
-    public ResponseEntity<List<UserDto>> findAll() {
-        List<UserDto> userList = userService.findAll();
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> userList = userService.getAllUsers();
         return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
 
@@ -31,20 +31,20 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> update(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
-        UserDto userUpdated = userService.update(id,userDto);
+    public ResponseEntity<UserDto> update(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
+        UserDto userUpdated = userService.update(userId, userDto);
         return ResponseEntity.status(HttpStatus.OK).body(userUpdated);
     }
 
     @PostMapping("{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        String deletedUser = userService.delete(id);
+    public ResponseEntity<String> delete(@PathVariable Long userId) {
+        String deletedUser = userService.delete(userId);
         return ResponseEntity.status(HttpStatus.OK).body(deletedUser);
     }
 
     @GetMapping("id/{id}")
-    public ResponseEntity<UserDto> findById(@PathVariable Long id) {
-        UserDto userDto = userService.findById(id);
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long userId) {
+        UserDto userDto = userService.getUserById(userId);
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }
 

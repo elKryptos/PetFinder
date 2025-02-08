@@ -22,13 +22,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public List<UserDto> findAll() {
+    public List<UserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
         return userMapper.toDtoList(users);
     }
 
-    public UserDto findById(Long id) {
-        Optional<User> user = Optional.ofNullable(userRepository.findById(id)
+    public UserDto getUserById(Long userId) {
+        Optional<User> user = Optional.ofNullable(userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(Constants.USER_NOT_FOUND.getMessage())));
         return userMapper.toDto(user.get());
     }
@@ -51,15 +51,15 @@ public class UserService {
         return userMapper.toDto(savedUser);
     }
 
-    public UserDto update(Long id, UserDto userDto) {
-        User user = userRepository.findById(id)
+    public UserDto update(Long userId, UserDto userDto) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException(Constants.USER_NOT_FOUND.getMessage()));
         userMapper.updateUser(user, userDto);
         return userMapper.toDto(userRepository.save(user));
     }
 
-    public String delete(Long id) {
-        User user = userRepository.findById(id)
+    public String delete(Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException(Constants.USER_NOT_FOUND.getMessage()));
         userRepository.delete(user);
         return Constants.USER_DELETED.getMessage();

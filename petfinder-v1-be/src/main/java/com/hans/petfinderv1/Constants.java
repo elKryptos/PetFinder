@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Constants {
 
+    //User
     USER_NOT_FOUND("User Not Found"),
     USE_ANOTHER_EMAIL("Use Another Email"),
     USER_DELETED("User Deleted"),
@@ -14,7 +15,14 @@ public enum Constants {
     USER_REGISTER_FAILED("User Register Failed"),
     USER_INFO_MISSING("User Info Missing"),
 
-    //token
+    //Animal
+    ANIMAL_NOT_FOUND("Animal Not Found"),
+    ANIMAL_REGISTERED("Animal Registered"),
+    ANIMAL_INFO_MISSING("Animal Info Missing"),
+    ANIMAL_REGISTER_FAILED("Animal Register Failed"),
+    ANIMAL_DELETED("Animal Deleted"),
+
+    //Token
     ERROR_REMOVING_EXPIRED_TOKEN("Error Removing Expired Token"),
     TOKEN_IS_EXPIRED("Token Is Expired"),
     EXPIRED_TOKEN("Expired Tokens Removed"),

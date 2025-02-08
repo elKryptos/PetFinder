@@ -5,8 +5,6 @@ import com.hans.petfinderv1.exception.DataIntegrityViolationException;
 import com.hans.petfinderv1.exception.NotFoundException;
 import com.hans.petfinderv1.model.dto.AuthDto;
 import com.hans.petfinderv1.model.dto.UserDto;
-import com.hans.petfinderv1.model.entity.User;
-import com.hans.petfinderv1.repository.TokenBlacklistRepository;
 import com.hans.petfinderv1.repository.UserRepository;
 import com.hans.petfinderv1.utils.TokenUtil;
 import io.jsonwebtoken.Claims;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
