@@ -1,12 +1,37 @@
-<div class="container mt-5">
-    <h2>Signin</h2>
-    <form [formGroup]="registrationForm">
-        <!--Username-->
+<div class="container d-flex justify-content-center align-items-center ">
+    <div class="card p-4">
+        <h2 class="text-center mb-4">Sign In</h2>
+        <form [formGroup]="registrationForm">
+        <!--Fisrtname-->
         <div class="mb-3">
-            <label class="form-label">Username</label>
-            <input type="text" class="form-control" formControlName="username" placeholder="Username">
-            <div class="text-danger" *ngIf="registrationForm.controls['username'].invalid && registrationForm.controls['username'].touched">
-                Username is required (min. 3 characters).
+            <label class="form-label">Firstname</label>
+            <input type="text" class="form-control" formControlName="firstname" placeholder="Firstname">
+            <div class="text-danger" *ngIf="registrationForm.controls['firstname'].invalid && registrationForm.controls['firstname'].touched">
+                Please enter your firstname.
+            </div>
+        </div>
+        <!--Lastname-->
+        <div class="mb-3">
+            <label class="form-label">Lastname</label>
+            <input type="text" class="form-control" formControlName="lastname" placeholder="Lastname">
+            <div class="text-danger" *ngIf="registrationForm.controls['lastname'].invalid && registrationForm.controls['lastname'].touched">
+                Please enter your firstname.
+            </div>
+        </div>      
+        <!--Birthday-->
+        <div class="mb-3">
+            <label class="form-label">Date of birth</label>
+            <div class="input-group">
+                <input type="text"
+                    class="form-control"
+                    formControlName="birthday"
+                    placeholder="Select your birth date"
+                    ngbDatepicker
+                    #d="ngbDatepicker">
+                <button class="btn btn-outline-warning" (click)="d.toggle()" type="button">📅</button>
+            </div>
+            <div class="text-danger" *ngIf="registrationForm.controls['birthday'].invalid && registrationForm.controls['birthday'].touched">
+                Date birth is required
             </div>
         </div>
         <!--Email-->
@@ -17,8 +42,26 @@
                 Please enter a valid email.
             </div>
         </div>
-
-
-
-    </form>
+        <!--Password-->
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="text" class="form-control" formControlName="password" placeholder="Password">
+            <div class="text-danger" *ngIf="registrationForm.controls['password'].invalid && registrationForm.controls['password'].touched">
+                Password must be at least 6 characters long
+            </div>
+        </div>
+        <!--Confirm Password-->
+        <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <input type="text" class="form-control" formControlName="confirmPassword" placeholder="Repeat your password">
+            <div class="text-danger" *ngIf="registrationForm.controls['confirmPassword'].invalid && registrationForm.controls['confirmPassword'].touched">
+                Confirming the password is required
+            </div>
+        </div>
+        <div class="d-flex justify-content-center gap-3 mt-3">
+            <button type="submit" class="btn btn-primary">Sign In</button>
+            <button type="submit" class="btn btn-primary" (click)="back()">Back</button>
+        </div>
+        </form>
+    </div>
 </div>

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class User {
     private Long userId;
     private String firstname;
     private String lastname;
+    private LocalDate birthday;
     @Column(unique = true)
     private String email;
     private String password;
