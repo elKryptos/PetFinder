@@ -18,25 +18,25 @@ public class AnimalController {
 
     private final AnimalService animalService;
 
-    @GetMapping()
+    @GetMapping("")
     public ResponseEntity<List<AnimalDto>> getAllAnimals() {
         List<AnimalDto> animals = animalService.getAllAnimals();
         return ResponseEntity.status(HttpStatus.OK).body(animals);
     }
 
-    @PostMapping()
+    @PostMapping("")
     public ResponseEntity<AnimalDto> createAnimal(@Valid @RequestBody AnimalDto animalDto) {
         AnimalDto newAnimal = animalService.createAnimal(animalDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newAnimal);
     }
 
-    @PutMapping("/{animalId}")
+    @PutMapping("/update/{animalId}")
     public ResponseEntity<AnimalDto> updateAnimal(@PathVariable Long animalId, @Valid @RequestBody AnimalDto animalDto) {
         AnimalDto updatedAnimal = animalService.updateAnimal(animalId, animalDto);
         return ResponseEntity.status(HttpStatus.OK).body(updatedAnimal);
     }
 
-    @PostMapping("/{animalId}")
+    @PostMapping("/delete/{animalId}")
     public ResponseEntity<String> deleteAnimal(@PathVariable Long animalId) {
         String deletedAnimal = animalService.deleteAnimal(animalId);
         return ResponseEntity.status(HttpStatus.OK).body(deletedAnimal);

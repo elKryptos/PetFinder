@@ -30,19 +30,19 @@ public class UserController {
        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
-    @PutMapping("/{userId}")
+    @PutMapping("/update/{userId}")
     public ResponseEntity<UserDto> update(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
         UserDto updatedUser = userService.update(userId, userDto);
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 
-    @PostMapping("{userId}")
+    @PostMapping("/delete/{userId}")
     public ResponseEntity<String> delete(@PathVariable Long userId) {
         String deletedUser = userService.delete(userId);
         return ResponseEntity.status(HttpStatus.OK).body(deletedUser);
     }
 
-    @GetMapping("id/{userId}")
+    @GetMapping("/id/{userId}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long userId) {
         UserDto userDto = userService.getUserById(userId);
         return ResponseEntity.status(HttpStatus.OK).body(userDto);

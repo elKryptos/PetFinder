@@ -1,0 +1,24 @@
+<div class="container mt-5">
+    <h2>Signin</h2>
+    <form [formGroup]="registrationForm">
+        <!--Username-->
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-control" formControlName="username" placeholder="Username">
+            <div class="text-danger" *ngIf="registrationForm.controls['username'].invalid && registrationForm.controls['username'].touched">
+                Username is required (min. 3 characters).
+            </div>
+        </div>
+        <!--Email-->
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="text" class="form-control" formControlName="email" placeholder="Email">
+            <div class="text-danger" *ngIf="registrationForm.controls['email'].invalid && registrationForm.controls['email'].touched">
+                Please enter a valid email.
+            </div>
+        </div>
+
+
+
+    </form>
+</div>

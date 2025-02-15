@@ -53,14 +53,14 @@ public class UserService {
 
     public UserDto update(Long userId, UserDto userDto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException(Constants.USER_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new NotFoundException(Constants.USER_NOT_FOUND.getMessage()));
         userMapper.updateUser(user, userDto);
         return userMapper.toDto(userRepository.save(user));
     }
 
     public String delete(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException(Constants.USER_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new NotFoundException(Constants.USER_NOT_FOUND.getMessage()));
         userRepository.delete(user);
         return Constants.USER_DELETED.getMessage();
     }
