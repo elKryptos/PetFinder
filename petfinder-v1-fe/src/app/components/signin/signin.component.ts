@@ -28,6 +28,10 @@ export class SigninComponent{
         this.location.back()
     }
 
+    submitForm() {
+        console.log("test")  // todo
+    }
+
 
 
 }

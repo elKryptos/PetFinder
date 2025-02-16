@@ -1,0 +1,33 @@
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="card p-4">
+        <h2 class="text-center mb-4">Login</h2>
+        <form [formGroup]="loginForm">
+            <!--Email-->
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="text" class="form-control" formControlName="email" placeholder="Email">
+                <div class="text-danger" *ngIf="loginForm.controls['email'].invalid && loginForm.controls['email'].touched">
+                    Please enter your email.
+                </div>
+            </div>
+            <!--Password-->
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <label class="form-label">Password</label>
+                    <a class="text-primary text-decoration-none" style="cursor: pointer;">Forgot password?</a>
+                </div>
+                <input type="text" class="form-control" formControlName="password" placeholder="Password">
+                <div class="text-danger" *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched">
+                    Please insert your password.
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+                <button type="submit" class=" btn btn-primary w-50">Login</button>
+            </div>
+            <div class="d-flex justify-content-center mt-2">
+                <p class="mb-0 me-2">New to PetFinder?</p>
+                <a class="text-primary text-decoration-none" style="cursor: pointer;">Create an account</a>
+            </div>
+        </form>
+    </div>
+</div>
